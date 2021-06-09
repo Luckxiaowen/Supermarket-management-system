@@ -3,8 +3,10 @@ package SuperMarket;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
-public class MainWin extends JFrame {
+public class MainWin extends JFrame implements ActionListener {
     JLabel title = new JLabel("欢 迎 使 用 星 期 八 超 市 管 理 系 统");
     JButton btn1 = new JButton(Data.log1);
     JButton btn2 = new JButton(Data.log2);
@@ -55,6 +57,7 @@ public class MainWin extends JFrame {
 
         btn1.setBounds(60,80,48,48);
         btn1.setBorderPainted(false);
+       // btn1.setText("1");
         btn2.setBounds(180,80,48,48);
         btn2.setBorderPainted(false);
         btn3.setBounds(300,80,48,48);
@@ -67,6 +70,8 @@ public class MainWin extends JFrame {
         btn6.setBorderPainted(false);
         btn7.setBounds(780,80,48,48);
         btn7.setBorderPainted(false);
+
+        btn1.addActionListener(this);
 
         this.add(title);
 
@@ -88,5 +93,12 @@ public class MainWin extends JFrame {
 
         this.add(lbBg);
 
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        if (e.getSource() == btn1){
+            new Commodity();
+        }
     }
 }
