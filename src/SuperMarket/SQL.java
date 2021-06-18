@@ -23,6 +23,12 @@ public class SQL {
         return null;
     }
 
+
+
+
+
+
+
    /* public static int modify(student stu){
         try {
             Class.forName("com.mysql.jdbc.Driver");

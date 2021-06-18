@@ -72,6 +72,12 @@ public class MainWin extends JFrame implements ActionListener {
         btn7.setBorderPainted(false);
 
         btn1.addActionListener(this);
+        btn2.addActionListener(this);
+        btn3.addActionListener(this);
+        btn4.addActionListener(this);
+        btn5.addActionListener(this);
+        btn6.addActionListener(this);
+        btn7.addActionListener(this);
 
         this.add(title);
 
@@ -99,6 +105,8 @@ public class MainWin extends JFrame implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == btn1){
             new Commodity();
+        }else if(e.getSource() == btn2){
+            new Purchase();
         }
     }
 }

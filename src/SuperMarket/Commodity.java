@@ -1,6 +1,7 @@
 package SuperMarket;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableCellRenderer;
 import java.awt.*;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -14,7 +15,7 @@ public class Commodity extends JFrame {
 
     JComboBox comboBox = new JComboBox();
 
-
+    JLabel about = new JLabel("本系统为测试系统。。。。");
     JLabel searchMode = new JLabel("搜索方式");
     JTextField input = new JTextField();
     JButton search = new JButton("搜索");
@@ -43,10 +44,15 @@ public class Commodity extends JFrame {
         search.setForeground(Color.red);
         search.setBounds(510,0,80,30);
 
+        about.setForeground(Color.red);
+        about.setBounds(200,600,150,20);
+
+
         this.add(input);
         this.add(search);
         this.add(searchMode);
         this.add(comboBox);
+        this.add(about);
 
         ResultSet rs = SQL.query("SELECT * FROM commodity",false,null);
         init(rs);
@@ -82,11 +88,27 @@ public class Commodity extends JFrame {
         data.add(hang);
 
         jt = new JTable(data,name);
+
         jt.getTableHeader().setReorderingAllowed(false);//不可拖动表头
+        //设置表格居中对齐
+        DefaultTableCellRenderer renderer = new DefaultTableCellRenderer();
+        renderer.setHorizontalAlignment(SwingConstants.CENTER);
+        jt.getColumn("商品编号").setCellRenderer(renderer);
+        jt.getColumn("商品名称").setCellRenderer(renderer);
+        jt.getColumn("商品价格").setCellRenderer(renderer);
+        jt.getColumn("商品数量").setCellRenderer(renderer);
+        jt.getColumn("商品备注").setCellRenderer(renderer);
+
+        jt.getColumn("商品编号").setHeaderRenderer(renderer);
+        jt.getColumn("商品名称").setHeaderRenderer(renderer);
+        jt.getColumn("商品价格").setHeaderRenderer(renderer);
+        jt.getColumn("商品数量").setHeaderRenderer(renderer);
+        jt.getColumn("商品备注").setHeaderRenderer(renderer);
+
 
         //通过JTable对象创建支持鼠标滚动面板
         jsp =new JScrollPane(jt);
-        jsp.setBounds(0,30,800,570);
+        jsp.setBounds(0,30,800,510);
         this.add(jsp);
 
     }

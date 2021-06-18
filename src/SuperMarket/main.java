@@ -12,7 +12,7 @@ public class main {
         }catch(Exception e) {
             System.out.println(e);
         }
-        //new Login();
+        //new Purchase();
         new MainWin();
     }
 }
