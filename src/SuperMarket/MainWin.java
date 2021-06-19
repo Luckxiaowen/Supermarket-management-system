@@ -107,6 +107,8 @@ public class MainWin extends JFrame implements ActionListener {
             new Commodity();
         }else if(e.getSource() == btn2){
             new Purchase();
+        }else if (e.getSource() == btn5){
+            new VIP();
         }
     }
 }
