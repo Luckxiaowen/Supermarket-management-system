@@ -3,17 +3,23 @@ package SuperMarket;
 import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Vector;
 
-public class Commodity extends JFrame {
+public class Commodity extends JFrame implements ActionListener{
     //支持鼠标滚动的面版
     JScrollPane jsp;
     //用于显示内容表格对象
     JTable jt;
 
+    int flag = 0;
     JComboBox comboBox = new JComboBox();
+
+
+    JButton showAll = new JButton("显示所有");
 
     JLabel about = new JLabel("本系统为测试系统。。。。");
     JLabel searchMode = new JLabel("搜索方式");
@@ -43,6 +49,13 @@ public class Commodity extends JFrame {
         search.setBackground(new Color(237,237,237));
         search.setForeground(Color.red);
         search.setBounds(510,0,80,30);
+        search.addActionListener(this);
+
+        showAll.setFont(new Font("华文楷体",1,20));
+        showAll.setBackground(new Color(237,237,237));
+        showAll.setForeground(Color.red);
+        showAll.setBounds(600,0,120,30);
+        showAll.addActionListener(this);
 
         about.setForeground(Color.red);
         about.setBounds(200,600,150,20);
@@ -53,6 +66,7 @@ public class Commodity extends JFrame {
         this.add(searchMode);
         this.add(comboBox);
         this.add(about);
+        this.add(showAll);
 
         ResultSet rs = SQL.query("SELECT * FROM commodity",false,null);
         init(rs);
@@ -105,13 +119,29 @@ public class Commodity extends JFrame {
         jt.getColumn("商品数量").setHeaderRenderer(renderer);
         jt.getColumn("商品备注").setHeaderRenderer(renderer);
 
+        if (flag==1)this.remove(jsp);
 
+
+    }
         //通过JTable对象创建支持鼠标滚动面板
         jsp =new JScrollPane(jt);
         jsp.setBounds(0,30,800,510);
         this.add(jsp);
-
-    }
+        flag=1;
 
 }
+
+
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        if (e.getActionCommand().equals("搜索")){
+            int index = Integer.parseInt(input.getText());
+            ResultSet res = SQL.query(index);
+            init(res);
+        }else if (e.getActionCommand().equals("显示所有")){
+            ResultSet rs = SQL.query("SELECT * FROM commodity",false,null);
+            init(rs);
+        }
+    }
 }

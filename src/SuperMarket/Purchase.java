@@ -243,9 +243,10 @@ public class Purchase {
                                 data.add(total);
 
                                 String sql = "insert into warehouse(s_id,u_id,d_id,date,total) values (?,?,?,?,?)";
-                                boolean isSucc = SQL.insert(sql,data);
+                                boolean isSucc = SQL.insertOrder(sql,data);
                                 if (isSucc){
-                                    JOptionPane.showMessageDialog(null,"添加成功","提示",0,null);
+                                    JOptionPane.showMessageDialog(null,"进货成功","提示",0,null);
+                                    ruku(count);
                                     win.setVisible(false);
                                     win2.setVisible(false);
                                     win3.setVisible(false);
@@ -337,6 +338,41 @@ public class Purchase {
             total += tmp;
         }
         return total;
+    }
+
+    public void ruku(int count){
+        Vector<Vector<String>> data = new Vector<Vector<String >>();
+        for (int i = 0; i < count; i++) {
+            Vector temp = new Vector();
+            for (int j = 0;j < 3; j++){
+                temp.add(jt.getValueAt(i,j));
+            }
+            data.add(temp);
+        }
+
+
+        Vector arrData[] = data.toArray(new Vector[data.size()]);
+        for (int i = 0; i < count; i++) {
+            ResultSet res = SQL.query("SELECT * FROM commodity",false,null);
+            int flag = 0;
+            Vector info = arrData[i];
+            while (true){
+                try {
+                    if (!res.next())break;
+                    if (res.getString(2).equals(info.get(0))){
+                        int amount = res.getInt(4) + Integer.parseInt((String) info.get(2));
+                        SQL.upData("update commodity set amount=? where name=?",amount,res.getString(2));
+                        flag=1;
+                        break;
+                    }
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
+                }
+            }
+            if (flag == 0)SQL.insertCommodity("insert into commodity(name,price,amount) values (?,?,?)",info);
+        }
+
+
     }
 
 }

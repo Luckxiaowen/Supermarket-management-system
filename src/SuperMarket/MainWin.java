@@ -7,6 +7,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class MainWin extends JFrame implements ActionListener {
+
+    private int id;
+
     JLabel title = new JLabel("欢 迎 使 用 星 期 八 超 市 管 理 系 统");
     JButton btn1 = new JButton(Data.log1);
     JButton btn2 = new JButton(Data.log2);
@@ -22,7 +25,8 @@ public class MainWin extends JFrame implements ActionListener {
     JLabel lab5 = new JLabel("会员管理");
     JLabel lab6 = new JLabel("账号注销");
     JLabel lab7 = new JLabel("退出系统");
-    public MainWin(){
+    public MainWin(int id){
+        this.id = id;
         this.setSize(900,600);
         this.setTitle("星期八超市");
         this.setVisible(true);
@@ -109,6 +113,20 @@ public class MainWin extends JFrame implements ActionListener {
             new Purchase();
         }else if (e.getSource() == btn5){
             new VIP();
+        }else if (e.getSource() == btn3){
+            new shopping();
+        }else if (e.getSource() == btn4){
+            new detailedOrder();
+        }else if (e.getSource() == btn7){
+            System.exit(-1);
+        }else if (e.getSource() == btn6){
+            System.out.println(this.id);
+            if (JOptionPane.YES_OPTION ==JOptionPane.showConfirmDialog(null,"确定注销？注销后将消失本账号!","提示",JOptionPane.YES_NO_OPTION)){
+                SQL.del("DELETE FROM admin where a_id=?",this.id);
+                new Login();
+                this.setVisible(false);
+            }
+
         }
     }
 }

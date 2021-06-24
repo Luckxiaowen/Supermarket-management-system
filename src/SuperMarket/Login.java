@@ -7,6 +7,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.security.PublicKey;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 public class Login extends JFrame implements ActionListener {
     JLabel title = new JLabel("星期八超市管理系统");
@@ -75,21 +77,48 @@ public class Login extends JFrame implements ActionListener {
             @Override
             public void keyPressed(KeyEvent e) {
                 if (e.getKeyCode() == 10) {
-                    login();
+
+
+                    denglu();
                 }
             }
         });
     }
 
-    public void login(){
-        this.setVisible(false);
-        new MainWin();
-    }
+    public int denglu() {
+        boolean flag=false;
+        ResultSet res = SQL.query("select * from admin",false,null);
+        while (true){
+            try {
+                if (!res.next()) break;
+                if (res.getString(2).equals(userText.getText()) && res.getString(3).equals(pasText.getText())) {
+                    //弹出新的主界面窗口
+                    int id = res.getInt(1);
+                    flag=!false;
+                    new MainWin(id);
+                    //关闭登录窗口
+                    this.setVisible(false);
+                    return id;
+                }
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
+
+            }
+        if (!flag){
+            JOptionPane.showMessageDialog(null,"用户名或密码错误","提示",0,null);
+            return 0;
+        }
+
+        return 1;
+        }
+
+
 
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getActionCommand().equals("登录")){
-            login();
+            denglu();
         }
     }
 }
